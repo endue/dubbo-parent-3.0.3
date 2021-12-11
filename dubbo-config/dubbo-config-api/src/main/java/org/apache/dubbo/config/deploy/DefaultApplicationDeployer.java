@@ -192,6 +192,7 @@ public class DefaultApplicationDeployer extends AbstractDeployer<ApplicationMode
             // register shutdown hook
             registerShutdownHook();
 
+            // 配置中心
             startConfigCenter();
 
             loadApplicationConfigs();
@@ -199,6 +200,7 @@ public class DefaultApplicationDeployer extends AbstractDeployer<ApplicationMode
             initModuleDeployers();
 
             // @since 2.7.8
+            // 元数据中心
             startMetadataCenter();
 
             initMetadataService();

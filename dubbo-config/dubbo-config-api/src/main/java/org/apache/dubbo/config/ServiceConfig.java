@@ -204,6 +204,8 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
             ExtensionLoader<ServiceListener> extensionLoader = this.getExtensionLoader(ServiceListener.class);
             this.serviceListeners.addAll(extensionLoader.getSupportedExtensionInstances());
         }
+        // serviceMetadata：服务实例元数据，就是对服务实例做一个描述的元数据
+        // 核心内部包括下面配置的服务接口、服务接口实例等
         initServiceMetadata(provider);
         serviceMetadata.setServiceType(getInterfaceClass());
         serviceMetadata.setTarget(getRef());
@@ -216,18 +218,25 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
             return;
         }
         // prepare for export
+        // 1.
         ModuleDeployer moduleDeployer = getScopeModel().getDeployer();
         moduleDeployer.prepare();
 
+        // 2.
+        // 这里刷新的是this，this指当前类ServiceConfig
         if (!this.isRefreshed()) {
             this.refresh();
         }
+
+        // 3.
         if (this.shouldExport()) {
             this.init();
-
+            // 3.1 是否延迟发布
             if (shouldDelay()) {
+                // 3.1.1 延迟发布服务实例
                 doDelayExport();
             } else {
+                // 3.1.2 非延迟发布服务实例
                 doExport();
             }
 

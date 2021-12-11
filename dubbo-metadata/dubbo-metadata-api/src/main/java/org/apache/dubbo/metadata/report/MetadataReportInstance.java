@@ -59,6 +59,7 @@ public class MetadataReportInstance {
         String relatedRegistryId = config.getRegistry() == null ? DEFAULT_KEY : config.getRegistry();
 //        RegistryConfig registryConfig = applicationModel.getConfigManager().getRegistry(relatedRegistryId)
 //                .orElseThrow(() -> new IllegalStateException("Registry id " + relatedRegistryId + " does not exist."));
+        // MetadataReport元数据上报组件
         MetadataReport metadataReport = metadataReportFactory.getMetadataReport(url);
         if (metadataReport != null) {
             metadataReports.put(relatedRegistryId, metadataReport);
