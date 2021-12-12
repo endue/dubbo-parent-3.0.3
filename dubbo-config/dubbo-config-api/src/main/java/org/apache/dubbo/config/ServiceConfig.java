@@ -384,13 +384,20 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
         if (StringUtils.isEmpty(path)) {
             path = interfaceName;
         }
+        // 发布服务
         doExportUrls();
+        // 发布服务完成
         exported();
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void doExportUrls() {
+        // getScopeModel()：获取一个ModuleModel。ModuleModel里面保存了dubbo各个组件，类似于门面模式那点意思
+        // ServiceRepository核心本质是dubbo服务数据存储组件
+
+        // 一个系统可以包含多个dubbo服务，而每个dubbo服务的本质就是一个接口 + 一个实现类
         ModuleServiceRepository repository = getScopeModel().getServiceRepository();
+        // 将发布的服务注册到dubbo内部数据存储组件ServiceRepository
         ServiceDescriptor serviceDescriptor = repository.registerService(getInterfaceClass());
         providerModel = new ProviderModel(getUniqueServiceName(),
             ref,
@@ -400,7 +407,7 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
             serviceMetadata);
 
         repository.registerProvider(providerModel);
-
+        // 生成注册服务的URL地址
         List<URL> registryURLs = ConfigValidationUtils.loadRegistries(this, true);
 
         for (ProtocolConfig protocolConfig : protocols) {
@@ -652,6 +659,10 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void doExportUrl(URL url, boolean withMetaData) {
+        // ref：实现类
+        // interfaceClass: 接口
+        // url: 记录暴露接口的信息
+        // 生成暴露接口的动态代理
         Invoker<?> invoker = proxyFactory.getInvoker(ref, (Class) interfaceClass, url);
         if (withMetaData) {
             invoker = new DelegateProviderMetaDataInvoker(invoker, this);
