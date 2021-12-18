@@ -24,9 +24,9 @@
     <dubbo:application name="demo-provider">
     </dubbo:application>
 
-    <dubbo:config-center address="zookeeper://127.0.0.1:2181"/>
-    <dubbo:metadata-report address="zookeeper://127.0.0.1:2181"/>
-    <dubbo:registry id="registry1" address="zookeeper://127.0.0.1:2181?registry-type=service"/>
+    <dubbo:config-center address="zookeeper://192.168.6.133:2181" timeout="600000"/>
+    <dubbo:metadata-report address="zookeeper://192.168.6.133:2181" timeout="600000"/>
+    <dubbo:registry id="registry1" address="zookeeper://192.168.6.133:2181?registry-type=service" timeout="600000"/>
 
     <dubbo:protocol name="dubbo" port="-1"/>
     <dubbo:protocol name="rest" port="-1"/>

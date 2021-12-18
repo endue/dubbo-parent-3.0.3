@@ -19,6 +19,7 @@ package org.apache.dubbo.config.spring;
 import org.apache.dubbo.common.utils.StringUtils;
 import org.apache.dubbo.config.ServiceConfig;
 import org.apache.dubbo.config.annotation.Service;
+import org.apache.dubbo.config.spring.context.DubboDeployApplicationListener;
 import org.apache.dubbo.config.spring.context.event.ServiceBeanExportedEvent;
 import org.apache.dubbo.config.spring.util.DubboBeanUtils;
 import org.apache.dubbo.config.support.Parameter;
@@ -34,6 +35,8 @@ import org.springframework.context.ApplicationEventPublisherAware;
 
 /**
  * ServiceFactoryBean
+ *
+ * Dubbo服务提供者
  *
  * @export
  */
@@ -80,6 +83,10 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
         return service;
     }
 
+    /**
+     * 该类执行完毕，发现并没有相关注册服务的入口，又是一脸懵逼，此时debug发现了{@link DubboDeployApplicationListener}
+     * @throws Exception
+     */
     @Override
     public void afterPropertiesSet() throws Exception {
         if (StringUtils.isEmpty(getPath())) {

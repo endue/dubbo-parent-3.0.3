@@ -667,6 +667,9 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
         if (withMetaData) {
             invoker = new DelegateProviderMetaDataInvoker(invoker, this);
         }
+        // 这里需要关注本地发布时exporter是什么，远程发布的时候exporter是什么
+        // 本地发布：exporter为ListenerExporterWrapper里面包装了InjvmExporter
+        // 远程发布：exporter为 debug看吧
         Exporter<?> exporter = protocolSPI.export(invoker);
         exporters.add(exporter);
     }

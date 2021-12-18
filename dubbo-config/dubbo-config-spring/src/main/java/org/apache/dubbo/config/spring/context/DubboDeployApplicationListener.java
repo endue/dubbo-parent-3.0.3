@@ -52,6 +52,7 @@ public class DubboDeployApplicationListener implements ApplicationListener<Appli
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
         this.applicationModel = DubboBeanUtils.getApplicationModel(applicationContext);
+        // 看这里取ModuleModel，和ServerBean中是一样的
         this.moduleModel = DubboBeanUtils.getModuleModel(applicationContext);
         // listen deploy events and publish DubboApplicationStateEvent
         applicationModel.getDeployer().addDeployListener(new DeployListenerAdapter<ApplicationModel>(){
@@ -90,8 +91,13 @@ public class DubboDeployApplicationListener implements ApplicationListener<Appli
         applicationContext.publishEvent(new DubboApplicationStateEvent(applicationModel, state, cause));
     }
 
+    /**
+     * 监听spring容器的相关事件
+     * @param event
+     */
     @Override
     public void onApplicationEvent(ApplicationContextEvent event) {
+        // 1. spring容器初始化完毕
         if (event instanceof ContextRefreshedEvent) {
             onContextRefreshedEvent((ContextRefreshedEvent) event);
         } else if (event instanceof ContextClosedEvent) {
@@ -99,6 +105,10 @@ public class DubboDeployApplicationListener implements ApplicationListener<Appli
         }
     }
 
+    /**
+     * spring容器初始化完毕
+     * @param event
+     */
     private void onContextRefreshedEvent(ContextRefreshedEvent event) {
         CompletableFuture future = moduleModel.getDeployer().start();
         try {

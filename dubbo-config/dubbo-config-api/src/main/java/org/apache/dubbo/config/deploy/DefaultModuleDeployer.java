@@ -119,6 +119,7 @@ public class DefaultModuleDeployer extends AbstractDeployer<ModuleModel> impleme
         initialize();
 
         // export services
+        // 发布服务
         exportServices();
 
         // prepare application instance
@@ -238,6 +239,7 @@ public class DefaultModuleDeployer extends AbstractDeployer<ModuleModel> impleme
         if (sc.isExported()) {
             return;
         }
+        // 无论是否异步都会调用ServiceConfig中的exportOnly()方法
         if (sc.shouldExportAsync()) {
             ExecutorService executor = executorRepository.getServiceExportExecutor();
             CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
