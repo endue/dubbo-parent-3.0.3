@@ -42,6 +42,10 @@ import org.w3c.dom.Element;
 /**
  * DubboNamespaceHandler
  *
+ * Dubbo自定义标签与命名空间实现代码入口。
+ *
+ * 首先要知道 BeanDefinitionParser，是Spring定义的bean解析器。要实现自定义标签，则需要实现该接口，然后通过NamespaceHandlerSupport将Bean定义解析器注册到Spring bean解析器中
+ * Dubbo中定义了DubboBeanDefinitionParser实现该接口
  * @export
  */
 public class DubboNamespaceHandler extends NamespaceHandlerSupport implements ConfigurableSourceBeanMetadataElement {
@@ -50,6 +54,9 @@ public class DubboNamespaceHandler extends NamespaceHandlerSupport implements Co
         Version.checkDuplicate(DubboNamespaceHandler.class);
     }
 
+    /**
+     * dubbo自定义标签，解析器为DubboBeanDefinitionParser
+     */
     @Override
     public void init() {
         registerBeanDefinitionParser("application", new DubboBeanDefinitionParser(ApplicationConfig.class));
